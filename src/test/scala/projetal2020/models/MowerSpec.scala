@@ -57,7 +57,7 @@ class MowerSpec extends AnyFunSuite {
   test("isValid should return false on invalid configuration (invalid actions)") {
     val lawn = new Lawn(5, 5)
     val mower = new Mower(2, 5, "E", "GFGAGAGAA")
-    assert(!mower.isValid(lawn))sa
+    assert(!mower.isValid(lawn))
   }
 
   test("Equals should return true when mower is the same") {

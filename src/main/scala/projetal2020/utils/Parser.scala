@@ -5,11 +5,15 @@ import projetal2020.models.{Lawn, Mower, Settings}
 
 object Parser {
   @SuppressWarnings(Array("org.wartremover.warts.Throw"))
-  def parseMowerConfig(config: String): Settings = {
-    val instructions = config.split('\n')
+  def parseMowerConfig(instructions: List[String]): Settings = {
 
     if (instructions.length % 2 == 1 && instructions.length >= 3) {
-      val lawn = checkLawnDimension(instructions(0)) match {
+      val lawnConfig = instructions.headOption match {
+        case Some(lawn) => lawn
+        case None =>
+          throw new DonneesIncorectesException("Lawn configuration is invalid")
+      }
+      val lawn = checkLawnDimension(lawnConfig) match {
         case Some(value) => value
         case None =>
           throw new DonneesIncorectesException("Lawn configuration is invalid")
@@ -45,7 +49,7 @@ object Parser {
     }
   }
   private def checkMowersConfig(
-      mowerConfig: Array[String],
+      mowerConfig: List[String],
       lawn: Lawn
   ): Option[Array[Mower]] = {
 
@@ -69,12 +73,12 @@ object Parser {
       }
     }
 
-    def checkAllMowers(mowerConfig: Array[String]): Option[Array[Mower]] =
-      mowerConfig.toList match {
+    def checkAllMowers(mowerConfig: List[String]): Option[Array[Mower]] =
+      mowerConfig match {
         case position :: moves :: rest =>
           checkMower(position, moves) match {
             case Some(mover) =>
-              checkAllMowers(rest.toArray) match {
+              checkAllMowers(rest) match {
                 case Some(mowersArray) => Some(mover +: mowersArray)
                 case None              => None
               }

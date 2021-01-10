@@ -20,7 +20,9 @@ class ParserSpec extends AnyFunSuite {
     )
 
     val settings = new Settings(lawn, mowers)
-    assert(settings.equals(Parser.parseMowerConfig(configStr)))
+    assert(
+      settings.equals(Parser.parseMowerConfig(configStr.split("\n").toList))
+    )
   }
 
   test(
@@ -33,9 +35,11 @@ class ParserSpec extends AnyFunSuite {
               |3 3 E
               |AADAADADDA""".stripMargin
 
-    assertThrows[DonneesIncorectesException](
-      Parser.parseMowerConfig(configStr)
-    )
+    val caught =
+      intercept[DonneesIncorectesException] { // Result type: IndexOutOfBoundsException
+        Parser.parseMowerConfig(configStr.split("\n").toList)
+      }
+    assert(caught.getMessage == "There is an invalid line number")
   }
 
   test(
@@ -47,9 +51,11 @@ class ParserSpec extends AnyFunSuite {
               |3 3 E
               |AADAADADDA""".stripMargin
 
-    assertThrows[DonneesIncorectesException](
-      Parser.parseMowerConfig(configStr)
-    )
+    val caught =
+      intercept[DonneesIncorectesException] {
+        Parser.parseMowerConfig(configStr.split("\n").toList)
+      }
+    assert(caught.getMessage == "Lawn configuration is invalid")
   }
 
   test(
@@ -61,9 +67,11 @@ class ParserSpec extends AnyFunSuite {
               |3 3 E
               |AADAADADDA""".stripMargin
 
-    assertThrows[DonneesIncorectesException](
-      Parser.parseMowerConfig(configStr)
-    )
+    val caught =
+      intercept[DonneesIncorectesException] {
+        Parser.parseMowerConfig(configStr.split("\n").toList)
+      }
+    assert(caught.getMessage == "Lawn configuration is invalid")
   }
 
   test(
@@ -77,9 +85,11 @@ class ParserSpec extends AnyFunSuite {
                       |3 3 W
                       |AADAADADDA""".stripMargin
 
-    assertThrows[DonneesIncorectesException](
-      Parser.parseMowerConfig(configStr)
-    )
+    val caught =
+      intercept[DonneesIncorectesException] {
+        Parser.parseMowerConfig(configStr.split("\n").toList)
+      }
+    assert(caught.getMessage == "Mowers configuration is invalid")
   }
 
   test(
@@ -93,9 +103,11 @@ class ParserSpec extends AnyFunSuite {
                       |6 3 W
                       |AADAADADDA""".stripMargin
 
-    assertThrows[DonneesIncorectesException](
-      Parser.parseMowerConfig(configStr)
-    )
+    val caught =
+      intercept[DonneesIncorectesException] {
+        Parser.parseMowerConfig(configStr.split("\n").toList)
+      }
+    assert(caught.getMessage == "Mowers configuration is invalid")
   }
 
   test(
@@ -109,9 +121,11 @@ class ParserSpec extends AnyFunSuite {
                       |6 3 W
                       |AADAADADDA""".stripMargin
 
-    assertThrows[DonneesIncorectesException](
-      Parser.parseMowerConfig(configStr)
-    )
+    val caught =
+      intercept[DonneesIncorectesException] {
+        Parser.parseMowerConfig(configStr.split("\n").toList)
+      }
+    assert(caught.getMessage == "Mowers configuration is invalid")
   }
 
 }

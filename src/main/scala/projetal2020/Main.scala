@@ -1,16 +1,23 @@
 package projetal2020
 
 import projetal2020.controllers.MowersController
-import projetal2020.utils.Parser
+import projetal2020.utils.{FileManager, Parser}
 
+@SuppressWarnings(Array("org.wartremover.warts.Throw"))
 object Main extends App {
-  val test = """5 5
-  |1 2 N
-  |GAGAGAGAA
-  |3 3 E
-  |AADAADADDA""".stripMargin
+  if (args.length == 1) {
+    val filename = args(0)
+    val settings = Parser.parseMowerConfig(FileManager.getLines(filename))
 
-  val settings = Parser.parseMowerConfig(test)
-  val mowersController =
-    new MowersController(settings.mowers, settings.lawn).launchMowers()
+    val mowersController =
+      new MowersController(settings.mowers, settings.lawn).launchMowers()
+    println(mowersController.lawn)
+
+    val result = FileManager.write(FileManager.getJsonPath(filename), "")
+    if (result.exists) {
+      println(s"process informations has been saved in ${result.toString}")
+    }
+  } else {
+    throw new Exception("invalid file path")
+  }
 }
