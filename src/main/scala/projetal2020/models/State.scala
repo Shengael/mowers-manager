@@ -1,9 +1,9 @@
 package projetal2020.models
 
-class Settings(val lawn: Lawn, val mowers: Array[Mower]) {
+class State(val lawn: Lawn, val mowers: Array[Mower]) {
   override def equals(that: Any): Boolean =
     that match {
-      case that: Settings =>
+      case that: State =>
         this.hashCode == that.hashCode
       case _ => false
     }

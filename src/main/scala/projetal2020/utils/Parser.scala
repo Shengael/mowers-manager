@@ -1,11 +1,11 @@
 package projetal2020.utils
 
 import projetal2020.exceptions.DonneesIncorectesException
-import projetal2020.models.{Lawn, Mower, Position, Settings}
+import projetal2020.models.{Lawn, Mower, Position, State}
 
 object Parser {
   @SuppressWarnings(Array("org.wartremover.warts.Throw"))
-  def parseMowerConfig(instructions: List[String]): Settings = {
+  def parseMowerConfig(instructions: List[String]): State = {
 
     if (instructions.length % 2 == 1 && instructions.length >= 3) {
       val lawnConfig = instructions.headOption match {
@@ -28,7 +28,7 @@ object Parser {
             "Mowers configuration is invalid"
           )
       }
-      new Settings(lawn, mowers)
+      new State(lawn, mowers)
     } else {
       throw new DonneesIncorectesException("There is an invalid line number")
     }
