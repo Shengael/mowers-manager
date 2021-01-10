@@ -1,6 +1,6 @@
 package projetal2020.models
 
-class Settings(lawn: Lawn, val mowers: Array[Mower]) {
+class Settings(val lawn: Lawn, val mowers: Array[Mower]) {
   override def equals(that: Any): Boolean =
     that match {
       case that: Settings =>

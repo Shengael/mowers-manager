@@ -16,12 +16,15 @@ class MowersController(val mowers: Array[Mower], val lawn: Lawn) {
 
     def launchAllMowers(mowersToLaunch: Array[Mower]): Array[Mower] =
       mowersToLaunch.toList match {
-        case mower :: rest =>
-          launchAllMowers(rest.toArray) :+ moveMower(mower.actions, mower)
+        case mower :: rest => {
+          val m = moveMower(mower.actions, mower)
+          println(s"Mower ended ${m.toString}")
+          val ms = launchAllMowers(rest.toArray)
+          m +: ms
+        }
         case Nil => Array[Mower]()
       }
 
-    val test = launchAllMowers(mowers).reverse
-    new MowersController(test, lawn)
+    new MowersController(launchAllMowers(mowers), lawn)
   }
 }

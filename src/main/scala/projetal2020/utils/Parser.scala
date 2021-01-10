@@ -3,11 +3,6 @@ package projetal2020.utils
 import projetal2020.exceptions.DonneesIncorectesException
 import projetal2020.models.{Lawn, Mower, Settings}
 
-/*
-  -- split
-  -- check
-  -- return objects
- */
 object Parser {
   @SuppressWarnings(Array("org.wartremover.warts.Throw"))
   def parseMowerConfig(config: String): Settings = {
@@ -23,7 +18,7 @@ object Parser {
         instructions.slice(1, instructions.length),
         lawn
       ) match {
-        case Some(value) => value.reverse
+        case Some(value) => value
         case None =>
           throw new DonneesIncorectesException(
             "Mowers configuration is invalid"
@@ -80,7 +75,7 @@ object Parser {
           checkMower(position, moves) match {
             case Some(mover) =>
               checkAllMowers(rest.toArray) match {
-                case Some(mowersArray) => Some(mowersArray :+ mover)
+                case Some(mowersArray) => Some(mover +: mowersArray)
                 case None              => None
               }
             case None => None

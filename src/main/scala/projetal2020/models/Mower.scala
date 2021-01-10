@@ -52,9 +52,8 @@ class Mower(
   def isValid(lawn: Lawn): Boolean = {
     @tailrec
     def checkActions(actionsStr: String): Boolean = actionsStr.toList match {
-      case action :: rest => {
+      case action :: rest =>
         Array('G', 'D', 'A').contains(action) && checkActions(rest.mkString)
-      }
       case Nil => true
     }
 
@@ -66,6 +65,9 @@ class Mower(
     ).contains(direction) && checkActions(actions)
   }
 
+  override def toString: String =
+    s"x: ${x.toString}, y: ${y.toString}, direction: ${direction}"
+
   override def equals(that: Any): Boolean = that match {
     case that: Mower =>
       this.hashCode == that.hashCode
@@ -73,18 +75,12 @@ class Mower(
   }
 
   override def hashCode: Int = {
-    println("****************** start ******************")
     val prime = 31
     val result = 1
     val xHashcode = prime * result + x
-    println(xHashcode)
     val yHashcode = prime * xHashcode + y
-    println(yHashcode)
     val directionHashcode = prime * yHashcode + direction.hashCode
-    println(directionHashcode)
     val actionsHashcode = prime * directionHashcode + actions.hashCode
-    println(actionsHashcode)
-    println("****************** end ******************")
     actionsHashcode
   }
 }
