@@ -1,7 +1,7 @@
 package projetal2020.utils
 
 import play.api.libs.json.{JsValue, Json}
-import projetal2020.models.{Lawn, Mower, Position, Settings}
+import projetal2020.models.{Lawn, Mower, Position, State}
 
 object JsonConverter {
 
@@ -21,12 +21,12 @@ object JsonConverter {
     "y" -> lawn.height
   )
 
-  def convertSettingsToJson(settings: Settings): JsValue = ???
+  def convertSettingsToJson(settings: State): JsValue = ???
 
   @SuppressWarnings(Array("org.wartremover.warts.Throw"))
   def convertToJson(obj: Any): JsValue = obj match {
     case position: Position => convertPositionToJson(position)
-    case settings: Settings => convertSettingsToJson(settings)
+    case settings: State    => convertSettingsToJson(settings)
     case mower: Mower       => convertMowerToJson(mower)
     case lawn: Lawn         => convertLawnToJson(lawn)
     case _                  => throw new Exception("bad object type")

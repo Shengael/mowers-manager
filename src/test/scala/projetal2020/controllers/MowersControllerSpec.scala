@@ -1,7 +1,7 @@
 package projetal2020.controllers
 
 import org.scalatest.funsuite.AnyFunSuite
-import projetal2020.models.{Lawn, Mower, Position}
+import projetal2020.models.{Lawn, Mower, Position, State}
 
 class MowersControllerSpec extends AnyFunSuite {
   test("Mower Controller should move mowers in the right place") {
@@ -10,7 +10,7 @@ class MowersControllerSpec extends AnyFunSuite {
       new Mower(Position(1, 2, "N"), "GAGAGAGAA"),
       new Mower(Position(3, 3, "E"), "AADAADADDA")
     )
-    val mowersController = new MowersController(mowers, lawn)
+    val mowersController = new MowersController(new State(lawn, mowers))
     val movedMowersController = mowersController.launchMowers()
 
     val expectedMowers = Array(
@@ -18,6 +18,6 @@ class MowersControllerSpec extends AnyFunSuite {
       new Mower(Position(3, 3, "E"), Position(5, 1, "E"), "AADAADADDA")
     )
 
-    assert(expectedMowers.sameElements(movedMowersController.mowers))
+    assert(expectedMowers.sameElements(movedMowersController.state.mowers))
   }
 }

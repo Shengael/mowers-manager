@@ -7,11 +7,11 @@ import projetal2020.utils.{FileManager, Parser}
 object Main extends App {
   if (args.length == 1) {
     val filename = args(0)
-    val settings = Parser.parseMowerConfig(FileManager.getLines(filename))
+    val state = Parser.parseMowerConfig(FileManager.getLines(filename))
 
     val mowersController =
-      new MowersController(settings.mowers, settings.lawn).launchMowers()
-    println(mowersController.lawn)
+      new MowersController(state).launchMowers()
+    println(mowersController.state.lawn)
 
     val result = FileManager.write(FileManager.getJsonPath(filename), "")
     if (result.exists) {
