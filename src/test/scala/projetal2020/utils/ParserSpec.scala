@@ -2,7 +2,7 @@ package projetal2020.utils
 
 import org.scalatest.funsuite.AnyFunSuite
 import projetal2020.exceptions.DonneesIncorectesException
-import projetal2020.models.{Lawn, Mower, Settings}
+import projetal2020.models.{Lawn, Mower, Position, Settings}
 
 class ParserSpec extends AnyFunSuite {
 
@@ -15,8 +15,8 @@ class ParserSpec extends AnyFunSuite {
 
     val lawn = new Lawn(5, 5)
     val mowers = Array(
-      new Mower(1, 2, "N", "GAGAGAGAA"),
-      new Mower(3, 3, "E", "AADAADADDA")
+      new Mower(Position(1, 2, "N"), "GAGAGAGAA"),
+      new Mower(Position(3, 3, "E"), "AADAADADDA")
     )
 
     val settings = new Settings(lawn, mowers)

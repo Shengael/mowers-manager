@@ -1,13 +1,27 @@
 package projetal2020.models
 
 import scala.annotation.tailrec
-// TODO: garder la position initial
+
+case class Position(x: Int, y: Int, direction: String) {
+  override def hashCode(): Int = {
+    val prime = 31
+    val result = 1
+    val xHashcode = prime * result + x
+    val yHashcode = prime * xHashcode + y
+    val directionHashcode = prime * yHashcode + direction.hashCode
+    directionHashcode
+  }
+}
+
 class Mower(
-    val x: Int,
-    val y: Int,
-    val direction: String,
+    val initialPosition: Position,
+    val currentPosition: Position,
     val actions: String
 ) {
+
+  def this(positon: Position, actions: String) = {
+    this(positon, positon, actions)
+  }
 
   def move(instruction: Char, lawn: Lawn): Mower = {
     val possibleDirections = Array("N", "E", "S", "W")
@@ -21,23 +35,36 @@ class Mower(
     val newMower = instruction match {
       case action if action == 'A' =>
         new Mower(
-          x + forward(direction)._1,
-          y + forward(direction)._2,
-          direction,
+          initialPosition,
+          Position(
+            currentPosition.x + forward(currentPosition.direction)._1,
+            currentPosition.y + forward(currentPosition.direction)._2,
+            currentPosition.direction
+          ),
           actions
         )
       case action if action == 'G' =>
         new Mower(
-          x,
-          y,
-          possibleDirections((possibleDirections.indexOf(direction) + 3) % 4),
+          initialPosition,
+          Position(
+            currentPosition.x,
+            currentPosition.y,
+            possibleDirections(
+              (possibleDirections.indexOf(currentPosition.direction) + 3) % 4
+            )
+          ),
           actions
         )
       case action if action == 'D' =>
         new Mower(
-          x,
-          y,
-          possibleDirections((possibleDirections.indexOf(direction) + 1) % 4),
+          initialPosition,
+          Position(
+            currentPosition.x,
+            currentPosition.y,
+            possibleDirections(
+              (possibleDirections.indexOf(currentPosition.direction) + 1) % 4
+            )
+          ),
           actions
         )
     }
@@ -57,16 +84,16 @@ class Mower(
       case Nil => true
     }
 
-    0 <= x && x <= lawn.width && 0 <= y && y <= lawn.height && Array(
+    0 <= currentPosition.x && currentPosition.x <= lawn.width && 0 <= currentPosition.y && currentPosition.y <= lawn.height && Array(
       "N",
       "E",
       "W",
       "S"
-    ).contains(direction) && checkActions(actions)
+    ).contains(currentPosition.direction) && checkActions(actions)
   }
 
   override def toString: String =
-    s"x: ${x.toString}, y: ${y.toString}, direction: ${direction}"
+    s"x: ${currentPosition.x.toString}, y: ${currentPosition.y.toString}, direction: ${currentPosition.direction}"
 
   override def equals(that: Any): Boolean = that match {
     case that: Mower =>
@@ -77,10 +104,9 @@ class Mower(
   override def hashCode: Int = {
     val prime = 31
     val result = 1
-    val xHashcode = prime * result + x
-    val yHashcode = prime * xHashcode + y
-    val directionHashcode = prime * yHashcode + direction.hashCode
-    val actionsHashcode = prime * directionHashcode + actions.hashCode
+    val initialHashcode = prime * result + initialPosition.hashCode
+    val yHashcode = prime * initialHashcode + currentPosition.hashCode
+    val actionsHashcode = prime * yHashcode + actions.hashCode
     actionsHashcode
   }
 }

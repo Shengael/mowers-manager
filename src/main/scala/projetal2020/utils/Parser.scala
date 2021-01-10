@@ -1,7 +1,7 @@
 package projetal2020.utils
 
 import projetal2020.exceptions.DonneesIncorectesException
-import projetal2020.models.{Lawn, Mower, Settings}
+import projetal2020.models.{Lawn, Mower, Position, Settings}
 
 object Parser {
   @SuppressWarnings(Array("org.wartremover.warts.Throw"))
@@ -59,9 +59,7 @@ object Parser {
       if (position.length == 3) {
         try {
           val mower = new Mower(
-            position(0).toInt,
-            position(1).toInt,
-            position(2),
+            Position(position(0).toInt, position(1).toInt, position(2)),
             actions
           )
           if (mower.isValid(lawn)) Some(mower) else None
