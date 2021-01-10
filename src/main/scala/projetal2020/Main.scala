@@ -1,7 +1,7 @@
 package projetal2020
 
 import projetal2020.controllers.MowersController
-import projetal2020.utils.{FileManager, Parser}
+import projetal2020.utils.{FileManager, JsonConverter, Parser}
 
 @SuppressWarnings(Array("org.wartremover.warts.Throw"))
 object Main extends App {
@@ -11,11 +11,15 @@ object Main extends App {
 
     val mowersController =
       new MowersController(state).launchMowers()
-    println(mowersController.state.lawn)
 
-    val result = FileManager.write(FileManager.getJsonPath(filename), "")
+    val result = FileManager.write(
+      FileManager.getJsonPath(filename),
+      JsonConverter.convertToJson(mowersController.state).beautify()
+    )
     if (result.exists) {
       println(s"process informations has been saved in ${result.toString}")
+    } else {
+      println(s"process informations could not be saved")
     }
   } else {
     throw new Exception("invalid file path")
